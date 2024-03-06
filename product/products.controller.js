@@ -11,9 +11,7 @@ const productService = require("./product.service");
 router.get("/", getAll);
 router.get("/:id", getById);
 router.post("/", createSchema, create);
-
 router.put("/:id", updateSchema, update);
-
 router.get("/:id/availability", getAvailable);
 
 module.exports = router;
