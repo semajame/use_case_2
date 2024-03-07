@@ -6,15 +6,43 @@ module.exports = {
   getById,
   create,
   update,
-  deactivate,
-  reactivate,
   delete: _delete,
-  getByUsername,
+  loginUser,
 };
 
-async function getByUsername(username) {
-  const user = await db.User.findOne({ where: { userName: username } });
-  return user;
+async function loginUser(params) {
+  if (!params || !params.userName || !params.email || !params.password) {
+    throw { message: "Invalid request data" };
+  }
+
+  const user = await db.User.findOne({
+    where: {
+      userName: params.userName,
+      email: params.email,
+    },
+  });
+
+  if (!user) {
+    throw { message: "Username or email not found" };
+  }
+
+  console.log("user:", user);
+
+  if (!params.password || !user.passwordHash) {
+    throw { message: "Invalid password data" };
+  }
+
+  const passwordMatch = await bcrypt.compare(
+    params.password,
+    user.passwordHash
+  );
+
+  if (!passwordMatch) {
+    throw { message: "Password Incorrect" };
+  }
+
+  // If you reach here, the login is successful
+  return { message: "Login Successful" };
 }
 
 async function getAll() {
@@ -27,10 +55,7 @@ async function getById(id) {
 
 async function create(params) {
   // validate
-
   const user = new db.User(params);
-  user.isactive = "1";
-
   // has password
   user.passwordHash = await bcrypt.hash(params.password, 10);
 
@@ -50,27 +75,6 @@ async function update(id, params) {
 
   // copy params to user and save
   Object.assign(user, params);
-  await user.save();
-}
-async function deactivate(id) {
-  const user = await getUser(id);
-
-  // Set isactive to 0 and set datedeactivated to current date
-  user.isactive = "0";
-  user.datedeactivated = new Date(); // This will set the current date and time
-
-  // Save the updated user
-  await user.save();
-}
-
-async function reactivate(id) {
-  const user = await getUser(id);
-
-  // Set isactive to 0 and set datedeactivated to current date
-  user.isactive = "1";
-  user.datereactivated = new Date(); // This will set the current date and time
-
-  // Save the updated user
   await user.save();
 }
 

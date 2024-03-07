@@ -7,9 +7,6 @@ function model(sequelize) {
     email: { type: DataTypes.STRING, allowNull: false },
     passwordHash: { type: DataTypes.STRING, allowNull: false },
     userName: { type: DataTypes.STRING, allowNull: false },
-    datedeactivated: { type: DataTypes.DATE, allowNull: true },
-    datereactivated: { type: DataTypes.DATE, allowNull: true },
-    isactive: { type: DataTypes.STRING, allowNull: true },
   };
 
   const options = {
