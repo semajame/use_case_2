@@ -26,6 +26,8 @@ async function initialize() {
   db.User = require("../users/user.model")(sequelize);
   db.Product = require("../product/product.model")(sequelize);
   db.Orders = require("../orders/order.model")(sequelize);
+  db.UserBranch = require("../users/userbranch.model")(sequelize);
+  db.Branches = require("../branches/branch.model")(sequelize);
 
   // sync all models with database
   await sequelize.sync({ alter: true });

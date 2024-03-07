@@ -15,6 +15,11 @@ app.use("/users", require("./users/users.controller"));
 app.use("/products", require("./product/products.controller"));
 app.use("/inventory", require("./inventory/inventory.controller"));
 
+// branches
+
+app.use("/auth", require("./users/users.controller"));
+app.use("/branches", require("./branches/branch.controller"));
+
 // order
 app.use("/orders", require("./orders/orders.controller"));
 
