@@ -58,8 +58,8 @@ function _delete(req, res, next) {
 function login(req, res) {
   userService
     .loginUser(req.body, req.params)
-    .then((result) => {
-      res.json(result); // Send the response from the loginUser function
+    .then(() => {
+      res.json({ message: "Login Successful" }); // Send the response from the loginUser function
     })
     .catch((error) => {
       res.status(400).json({ error: error.message }); // Send an error response
@@ -68,9 +68,9 @@ function login(req, res) {
 
 function logout(req, res, next) {
   userService
-    .getByUsername(req.body.userName)
+    .logoutUser(req.body, req.params)
     .then(() => {
-      res.json({ message: "logout successful" });
+      res.json({ message: "Logout Successful" });
     })
     .catch(next);
 }

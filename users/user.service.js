@@ -8,6 +8,7 @@ module.exports = {
   update,
   delete: _delete,
   loginUser,
+  logoutUser,
 };
 
 async function loginUser(params) {
@@ -43,6 +44,41 @@ async function loginUser(params) {
 
   // If you reach here, the login is successful
   return { message: "Login Successful" };
+}
+
+async function logoutUser(params) {
+  if (!params || !params.userName || !params.email || !params.password) {
+    throw { message: "Invalid request data" };
+  }
+
+  const user = await db.User.findOne({
+    where: {
+      userName: params.userName,
+      email: params.email,
+    },
+  });
+
+  if (!user) {
+    throw { message: "Username or email not found" };
+  }
+
+  console.log("user:", user);
+
+  if (!params.password || !user.passwordHash) {
+    throw { message: "Invalid password data" };
+  }
+
+  const passwordMatch = await bcrypt.compare(
+    params.password,
+    user.passwordHash
+  );
+
+  if (!passwordMatch) {
+    throw { message: "Password Incorrect" };
+  }
+
+  // If you reach here, the login is successful
+  return { message: "Logout Successful" };
 }
 
 async function getAll() {
