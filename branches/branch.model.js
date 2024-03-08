@@ -8,7 +8,7 @@ function model(sequelize) {
     location: { type: DataTypes.STRING, allowNull: false },
     status: {
       type: DataTypes.ENUM("active", "inactive"),
-      allowNull: false,
+      allowNull: true,
       defaultValue: "active",
     },
   };
